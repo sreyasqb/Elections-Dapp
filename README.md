@@ -1,4 +1,4 @@
-# cn_package
+# Elections Dapp
 
 A new Flutter project.
 
