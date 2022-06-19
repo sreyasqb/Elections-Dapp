@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables
 
+import 'package:cn_package/provider/metamask.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({
@@ -9,6 +11,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('gi');
+    final metaMaskProvider = Provider.of<MetaMaskProvider>(context);
+    if (metaMaskProvider.isEnabled && metaMaskProvider.isInOperatingChain) {
+      print('conntected');
+      print(metaMaskProvider.currentAddress);
+      print('thats the address');
+    } else if (metaMaskProvider.isConnected && !metaMaskProvider.isInOperatingChain) {
+      print('Wrong chain please connected to ${metaMaskProvider.operatorChain}');
+
+    }
+    else if (metaMaskProvider.isEnabled){
+      print('check your metamask');
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -46,14 +62,18 @@ class ChoiceButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final metaMaskProvider = Provider.of<MetaMaskProvider>(context);
     return SizedBox(
       height: 60,
       child: TextButton(
         style: TextButton.styleFrom(
           backgroundColor: Colors.amber,
         ),
-        onPressed: () {
-          Navigator.pushNamed(context, page);
+        onPressed: () async {
+          // Navigator.pushNamed(context, page);
+          // print('hi');
+          await metaMaskProvider.connect();
+          
         },
         child: Text(
           textData,
